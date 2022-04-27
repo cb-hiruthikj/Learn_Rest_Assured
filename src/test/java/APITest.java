@@ -83,7 +83,7 @@ public class APITest {
     }
 
     @Test
-    void test5_deserialize_array() {
+    void test5_deserialize_list() {
         List<UserPOJO> users=
         given()
                 .queryParam("page", 2)
@@ -91,6 +91,23 @@ public class APITest {
                 .get("/users")
                 .jsonPath()
                 .getList("data[1,2]", UserPOJO.class)
+                ;
+
+        for (UserPOJO user : users) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    void test6_deserialize_array() {
+        UserPOJO[] users=
+                given()
+                        .queryParam("page", 2)
+                        .when()
+                        .get("/users")
+                        .jsonPath()
+                        // Use array notation "[]" to get as Array of POJOs
+                        .getObject("data", UserPOJO[].class)
                 ;
 
         for (UserPOJO user : users) {
